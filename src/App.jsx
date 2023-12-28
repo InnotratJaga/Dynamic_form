@@ -1,69 +1,109 @@
-import {
-  Button,
-  Checkbox,
-  Input,
-  NumberInput,
-  Select,
-  Textarea,
-} from "@mantine/core";
-import React, { useState } from "react";
-import { IconPlus } from "@tabler/icons-react";
-import { IconMinus } from "@tabler/icons-react";
+import { Button, Checkbox, Select, TagsInput, TextInput } from "@mantine/core";
+import React, { useRef, useState } from "react";
 
 const App = () => {
-  const [textInput, setTextInput] = useState([1]);
-  const increase = () => {
-    setTextInput((prev) => [...prev, prev.length - 1 + 1]);
+  const [textValue, setTextValue] = useState("");
+  const [selectType, setSelectType] = useState("");
+  // const [dropdownValue, setDropdownValue] = useState("");
+
+  const [open, setOpen] = useState("");
+  const [searchValue, setSearchValue] = useState("");
+
+  const [updatedData, setUpdatedData] = useState([]);
+  const select = useRef();
+
+  const handleChange = () => {
+    console.log(select.current.value);
+    if (textValue === "") {
+      return;
+    } else if (selectType === "Number" || selectType === "TextBox") {
+      console.log("clicked");
+      setUpdatedData((prev) => [
+        ...prev,
+        { lebel: textValue, dropDownType: selectType },
+      ]);
+
+      const reset = (select.current.value = "");
+
+      setTextValue("");
+      setSelectType(reset);
+      // select.current.value = ""
+    } else {
+      setOpen(true);
+      setTextValue("");
+      setSelectType("");
+    }
   };
-  const decrease = () => {
-    const data = [...textInput];
-    data.pop();
-    setTextInput(data);
-  };
+
+  // console.log(updatedData);
+
+  // console.log("selectType", selectType);
+  // console.log("select", select);
   return (
-    <div className="w-screen min-h-screen   flex justify-center items-center bg-gray-100">
-      <div className="mx-auto max-w-4xl min-auto  bg-gray-50  shadow-lg rounded-lg flex relative overflow-auto">
-        <div className=" h-auto w-full py-12 px-7    gap-1 ">
-          <div className="w-[35%] my-5">
-            <NumberInput
-              // label="Input label"
-              // description="Input description"
-              placeholder="Form Id"
-            />
-          </div>
-          <div className="flex  gap-4">
-            <div className="flex flex-col gap-2">
-              {textInput.map((item, i) => (
-                <div className="flex  gap-5">
-                  <Input placeholder="Toy Name" />
-                  <Select placeholder="Game Name" data={["A", "B", "C"]} />
-                  <div className="flex items-center gap-3">
-                    <Checkbox defaultChecked label="A" />
-                    <Checkbox defaultChecked label="B" />
-                    <Checkbox defaultChecked label="C" />
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div
-              className="border-[1px] border-gray-500 absolute left-2 top-4 px-2 py-1  rounded-md cursor-pointer "
-              onClick={increase}
-            >
-              <IconPlus />
-            </div>
-            {textInput.length > 1 && (
-              <div
-                className="border-[1px] border-gray-500 ml-2  absolute top-4  left-12 px-2 py-1  rounded-md cursor-pointer "
-                onClick={decrease}
-              >
-                <IconMinus />
-              </div>
-            )}
-          </div>
-          <Button className="mt-5" variant="filled" size="md">
-            <span className="font-medium">Submit</span>
-          </Button>
+    <div className="w-screen min-h-screen bg-gray-300 flex items-center">
+      <div className="mx-auto h-full max-w-2xl  mt-20  ">
+        <div className="flex w-full gap-2 bg-gray-200 px-3 py-3 mb-2 rounded-md">
+          <TextInput
+            placeholder="Enter lebel"
+            onChange={(e) => setTextValue(e.target.value)}
+            value={textValue}
+            className="w-full"
+          />
+
+          <Select
+            data={["dropDown", "TextBox", "Number"]}
+            onChange={(e) => setSelectType(e)}
+            value={selectType}
+            id="main-dropdown"
+            className="w-full"
+            placeholder="select Field Type"
+            ref={select}
+          />
         </div>
+        <div className="w-full">
+          {updatedData?.map((item, i) => (
+            // <div>{item.dropDownType}</div>
+
+            <div
+              key={item.lebel}
+              className="flex gap-2 w-full mb-5 bg-gray-200 px-2 py-3 rounded-md  "
+            >
+              <TextInput
+                placeholder="Enter lebel"
+                value={item.dropDownType}
+                className="w-full"
+                readOnly
+              />
+
+              <TextInput
+                placeholder="Enter lebel"
+                value={item.dropDownType}
+                className="w-full"
+                readOnly
+              />
+            </div>
+          ))}
+
+          {open && (
+            <div className="bg-gray-200 px-2 py-3 rounded-md ">
+              <TagsInput
+                placeholder="possible message"
+                searchValue={searchValue}
+                onSearchChange={(e) => setSearchValue(e)}
+                data={[]}
+                size="lg"
+              />
+            </div>
+          )}
+        </div>
+        <Button
+          variant="filled"
+          size="md"
+          onClick={handleChange}
+          className="float-right mt-3"
+        >
+          Add
+        </Button>
       </div>
     </div>
   );

@@ -1,0 +1,26 @@
+.dynamic-form-container {
+    max-width: 400px;
+    margin: auto;
+  }
+  
+  .form-field {
+    margin-bottom: 15px;
+  }
+  
+  .add-field-btn {
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  
+  .submit-btn {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .submit-btn:hover {
+    background-color: #45a049;
+  }
