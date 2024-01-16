@@ -1,5 +1,6 @@
-import { Button, Select, TagsInput, TextInput } from "@mantine/core";
+import { Button,Select, TagsInput, TextInput } from "@mantine/core";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const App = () => {
   const [textValue, setTextValue] = useState("");
@@ -31,9 +32,40 @@ const App = () => {
     });
   };
 
-  useEffect(() => {
-    localStorage.setItem("form_detail", JSON.stringify(updatedData));
-  }, [updatedData]);
+  const handleSumbit = () => {
+    try {
+      const postData = async () => {
+        const response = await axios.post(
+          "http://localhost:1000/create",
+         updatedData
+        );
+        console.log(response.data);
+        // // //   console.log(response)
+        // console.log(updatedData);
+
+        // console.log(JSON.stringify(updatedData));
+        // localStorage.setItem("form_detail", JSON.stringify(updatedData));
+      };
+
+      postData();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // useEffect(() => {
+  //   // localStorage.setItem("form_detail", JSON.stringify(updatedData));
+
+  //   const postData = async () => {
+  //       const response = await axios.post('http://localhost:1000/create',{
+  //         updatedData
+  //       })
+  //       console.log(response)
+  //   }
+
+  //   postData();
+
+  // }, [updatedData]);
 
   return (
     <div className="w-screen min-h-screen bg-gray-300 flex justify-center ">
@@ -93,8 +125,20 @@ const App = () => {
             )}
           </div>
         ))}
+
+        {/* <div className="submit-btn  text-center" >
+          <button download={updatedData} onClick={handleSumbit} color="yellow" >Submit</button>
+        </div> */}
+       <div style={{display:"flex",justifyContent:"center"}}>
+       <button onClick={handleSumbit}style={{padding:"10px 20px",backgroundColor:"blue",borderRadius:"2px",cursor:"pointer",color:"white"}}>Submit</button>
+       </div>
+
       </div>
+
+
     </div>
+
+
   );
 };
 
